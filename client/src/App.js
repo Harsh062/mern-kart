@@ -1,21 +1,38 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Switch, Route, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 import './App.css';
+import Signup from './containers/Signup';
+import { LoadingIndicator } from './shared/LoadingIndicator';
 
 class App extends Component {
   render() {
+    const { user, signUpPending, signUpComplete, signUpError } = this.props;
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <LoadingIndicator busy={signUpPending} />
+        <NavLink to="/signup">Sign up</NavLink>
+        <a href="auth/google">Sign in with google</a>
+        <a href="http://localhost:5000/auth/facebook">Sign in with Facebook</a>
+        <Switch>
+              <Route path='/signup' component={Signup} />
+        </Switch>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  const { user, signUpPending, signUpComplete, signUpError } = state.authReducer;
+  return {
+    user, 
+    signUpPending, 
+    signUpComplete, 
+    signUpError
+  }
+}
+
+
+export default connect(mapStateToProps)(App);
