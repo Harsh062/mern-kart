@@ -4,10 +4,14 @@ module.exports = (app, passport) => {
         scope: ['profile', 'email']
     }));
     
-    app.get('/auth/google/callback', passport.authenticate('google', {
-        successRedirect: '/home',
-        failureRedirect: '/'
-    }));
+    app.get('/auth/google/callback', function(req, res, next) {
+        passport.authenticate('google', (err, user, info) => {
+            console.log(`info: ${info}`);
+          if (err) { return next(err); }
+          if (!user) { return res.send(err); }
+          return res.send(user);
+        })(req, res, next);
+      });
 
     app.get('/auth/facebook', passport.authenticate('facebook', {
         scope: 'email'
@@ -18,13 +22,12 @@ module.exports = (app, passport) => {
         failureRedirect: '/'
     }));
 
-    app.get('/home', (req, res) => {
-        console.log(`res: ${res}`);
-        res.send('Authentication Complete');
-    })
-
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/home', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
-    }));
+    app.post('/signup', function(req, res, next) {
+        passport.authenticate('local-signup', (err, user, info) => {
+            console.log(`info: ${info}`);
+          if (err) { return next(err); }
+          if (!user) { return res.send(err); }
+          return res.send(user);
+        })(req, res, next);
+      });
 }
