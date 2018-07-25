@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Switch, Route, NavLink } from 'react-router-dom';
+import React, { Component, Fragment } from 'react';
+import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import './App.css';
@@ -9,24 +9,23 @@ import Dashboard from './containers/Dashboard';
 
 class App extends Component {
 
- componentDidMount() {
-   if (this.props.signUpComplete) {
-     this.navigateToDashboard();
-   }
- }
-
- navigateToDashboard = () => {
-   this.props.history.push('/dashboard');
- }
-
  render() {
-   const { user, signUpPending, signUpError } = this.props;
+   const { user, signUpPending, signUpError, signUpComplete } = this.props;
+   if (signUpComplete) {
+     return <Redirect to="/dashboard" />
+   }
 
    return (
      <div className="App">
        <LoadingIndicator busy={signUpPending} />
-       <NavLink to="/signup">Sign up</NavLink>
-       <a href="auth/google">Sign in with google</a>
+       {
+         !signUpPending && !signUpComplete && 
+         <Fragment>
+         <NavLink to="/signup">Sign up</NavLink>
+         <a href="auth/google">Sign in with google</a>
+         </Fragment>
+       }
+       
        <Switch>
              <Route path='/signup' component={Signup} />
        </Switch>

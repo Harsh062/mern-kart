@@ -3,11 +3,17 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var flash    = require('connect-flash');
 var bodyParser = require('body-parser');
+var cookieSession = require('cookie-session');
 
 var dbConf = require('./config/db');
 var keys = require('./config/keys');
 var PORT = process.env.PORT || 5000;
 var app = express();
+
+app.use(cookieSession({
+    maxAge: 30*24*60*60*1000,
+    keys: [keys.cookieKey]
+}));
 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions

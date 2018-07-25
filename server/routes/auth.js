@@ -9,7 +9,10 @@ module.exports = (app, passport) => {
                        console.log(`info: ${info}`);
                      if (err) { return next(err); }
                      if (!user) { return res.send(err); }
-                     return res.send(user);
+                     res.writeHead(302, {
+				        'Location': 'http://localhost:3000/dashboard'
+			        });
+			        res.end();
                    })(req, res, next);
                  });
     
@@ -21,6 +24,11 @@ module.exports = (app, passport) => {
            successRedirect: '/home',
            failureRedirect: '/'
        }));
+
+       app.get('/api/current_user', (req, res) => {
+           console.log('req.user: ', req.user);
+           res.send(req.user);
+       })
     
        app.post('/signup', function(req, res, next) {
                    passport.authenticate('local-signup', (err, user, info) => {
