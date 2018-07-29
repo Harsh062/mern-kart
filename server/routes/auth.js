@@ -34,8 +34,10 @@ module.exports = (app, passport) => {
                    passport.authenticate('local-signup', (err, user, info) => {
                      if (err) { return next(err); }
                      if (!user) { return res.send(err); }
-                     delete user.local.password;
-                     return res.send(user);
+                     req.login(user, function(err) {
+                        if (err) { return next(err); }
+                        return res.send(user);
+                      });
                    })(req, res, next);
                  });
     }

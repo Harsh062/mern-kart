@@ -1,35 +1,47 @@
-var express = require('express');
-var passport = require('passport');
+// server.js
+
+// set up ======================================================================
+// get all the tools we need
+var express  = require('express');
+var app      = express();
+var port     = process.env.PORT || 5000;
 var mongoose = require('mongoose');
+var passport = require('passport');
 var flash    = require('connect-flash');
-var bodyParser = require('body-parser');
-var cookieSession = require('cookie-session');
 
-var dbConf = require('./config/db');
+var morgan       = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser   = require('body-parser');
+var session      = require('express-session');
+
+var configDB = require('./config/db.js');
 var keys = require('./config/keys');
-var PORT = process.env.PORT || 5000;
-var app = express();
 
-app.use(cookieSession({
-    maxAge: 30*24*60*60*1000,
-    keys: [keys.cookieKey]
-}));
+// configuration ===============================================================
+mongoose.connect(configDB.dbURL, { useNewUrlParser: true }); // connect to our database
 
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
+require('./config/passport')(passport); // pass passport for configuration
 
-// support parsing of application/json type post data
-app.use(bodyParser.json());
-
-//support parsing of application/x-www-form-urlencoded post data
+// set up our express application
+app.use(morgan('dev')); // log every request to the console
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.Promise = global.Promise;
-mongoose.connect(dbConf.dbURL);
+// required for passport
+app.use(session({
+    secret: keys.cookieKey, // session secret
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 
-require('./config/passport')(passport);
-require('./routes/auth')(app, passport);
-
-app.listen(PORT, () => {
-    console.log(`Server started on port: ${PORT}`);
+// routes ======================================================================
+require('./routes/auth')(app, passport); // load our routes and pass in our app and fully configured passport
+// launch ======================================================================
+app.listen(port, () => {
+    console.log('The magic happens on port ' + port);
 });
+

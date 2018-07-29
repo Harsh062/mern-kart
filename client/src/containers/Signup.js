@@ -26,26 +26,34 @@ class Signup extends Component {
     render() {
         return (
             <Grid>
-            <Row className="show-grid">
-              <Col xs={4} xsOffset={4}>
+              <Row>
+              <Col xs={6}>
+              
+            <Row>
+              <Col xs={8}>
                 Sign up
               </Col>
             </Row>
-            <Row className="show-grid">
-              <Col xs={4} xsOffset={4}>
-                <input type="text" name="email" placeholder="Email" onChange={(event) => this.onFieldChange(event)}/>
+            <Row>
+              <Col xs={8}>
+                <input type="email" name="email" placeholder="Email" onChange={(event) => this.onFieldChange(event)} className="fullWidth"/>
               </Col>
             </Row>
-            <Row className="show-grid">
-              <Col xs={4} xsOffset={4}>
-                <input type="password" name="password" placeholder="Password" onChange={(event) => this.onFieldChange(event)}/>
+            <Row>
+              <Col xs={8}>
+                <input type="password" name="password" placeholder="Password" className="fullWidth" onChange={(event) => this.onFieldChange(event)}/>
               </Col>
             </Row>
-            <Row className="show-grid">
-              <Col xs={4} xsOffset={4}>
+            <Row>
+              <Col xs={8}>
                 <button onClick={this.onSignUp}>Sign up</button>
               </Col>
             </Row>
+            </Col>
+            <Col xs={6}>
+              <button><a href="/auth/google">Sign up with Google</a></button>
+            </Col>
+          </Row>
           </Grid>
         )
     }

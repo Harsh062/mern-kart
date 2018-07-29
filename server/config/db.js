@@ -1,3 +1,3 @@
 module.exports = {
-    dbURL: 'mongodb://localhost:27017/mern-cart'
+    dbURL: 'mongodb://localhost:27017/merncart'
 }

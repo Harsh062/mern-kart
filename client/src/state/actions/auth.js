@@ -6,7 +6,12 @@ const onSignUp = signUpObj => ({
     payload: signUp(signUpObj)
 });
 
+const logout = () => {
+    type: actions.LOGOUT
+}
+
 export {
-    onSignUp
+    onSignUp,
+    logout
 };
 
