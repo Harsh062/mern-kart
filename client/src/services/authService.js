@@ -16,3 +16,18 @@ export const signUp = signUpObj => {
    });
   
 }
+
+export const logoutService = () => {
+    return new Promise((resolve, reject) => {
+        axios.get(`${BASE_URL}/logout`)
+        .then(res => {
+            console.log(`res on logout: ${res.data}`);
+            resolve(res.data);
+        })
+        .catch(err => {
+            console.log(`err: ${err}`);
+            reject(err);
+        })
+    });
+   
+ }

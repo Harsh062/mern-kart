@@ -35,14 +35,14 @@ export const Header = (props) => {
                 isLoggedIn && 
                 <Nav>
                 <NavItem eventKey={1}>
-                    <NavLink to="/settings">
-                        Settings
-                    </NavLink>
-                </NavItem>
-                <NavItem eventKey={1}>
                     <div onClick={props.onUserClick}>
                         Welcome {user.local.email}
                     </div>
+                </NavItem>
+                <NavItem eventKey={1}>
+                    <NavLink to="/settings">
+                        Settings
+                    </NavLink>
                 </NavItem>
                 <NavItem eventKey={1}>
                     <div onClick={props.onLogout}>

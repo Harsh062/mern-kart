@@ -40,6 +40,13 @@ export const AuthReducer = (state = initialState, action) => {
                 signUpComplete: false,
                 signUpError: action.payload
             };
+        case actions.LOGOUT_FULFILLED:
+            console.log('LOGOUT_FULFILLED');
+            return {
+                ...state,
+                user: null,
+                signUpComplete: false
+            };
         default:
             return state;
     }

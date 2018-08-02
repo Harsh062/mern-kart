@@ -23,6 +23,7 @@ mongoose.connect(configDB.dbURL, { useNewUrlParser: true }); // connect to our d
 require('./config/passport')(passport); // pass passport for configuration
 
 // set up our express application
+app.use('/uploads', express.static('uploads'))
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
@@ -40,6 +41,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 require('./routes/auth')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./routes/user')(app);
 // launch ======================================================================
 app.listen(port, () => {
     console.log('The magic happens on port ' + port);

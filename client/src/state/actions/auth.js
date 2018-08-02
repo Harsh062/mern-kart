@@ -1,14 +1,15 @@
 import * as actions from './actionTypes';
-import { signUp } from '../../services/authService';
+import { signUp, logoutService } from '../../services/authService';
 
 const onSignUp = signUpObj => ({
     type: actions.SIGNUP,
     payload: signUp(signUpObj)
 });
 
-const logout = () => {
-    type: actions.LOGOUT
-}
+const logout = () => ({
+    type: actions.LOGOUT,
+    payload: logoutService()
+});
 
 export {
     onSignUp,

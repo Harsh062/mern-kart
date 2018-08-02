@@ -10,8 +10,25 @@ import { logout } from './state/actions/auth';
 import Signup from './containers/Signup';
 import { LoadingIndicator } from './shared/LoadingIndicator';
 import Dashboard from './containers/Dashboard';
+import Settings from './containers/Settings';
 
 class App extends Component {
+  state = {
+    file: null
+  };
+fileChangeHandler = (ev) => {
+  console.log('ev.target.files[0]:', ev.target.files[0]);
+    this.setState({
+      selectedFile: ev.target.files[0]
+    })
+  }
+
+  fileUploadHandler = () => {
+    const fd = new FormData();
+    fd.append("name", 'Harsh');
+    fd.append("image", this.state.selectedFile, this.state.selectedFile.name);
+    console.log('fd: ', fd);
+  }
 
   logoutHandler = () => {
     this.props.logout();
@@ -27,6 +44,8 @@ class App extends Component {
         user={user}
         onLogout={this.logoutHandler}
         />
+        <input type="file" onChange={this.fileChangeHandler}/>
+        <button onClick={this.fileUploadHandler}>Upload</button>
        <LoadingIndicator busy={signUpPending} />
        {
          signUpComplete && <Redirect to="/dashboard" />
@@ -38,6 +57,7 @@ class App extends Component {
              <Route path='/signup' component={Signup} />
              <Route path='/dashboard' component={Dashboard} />
              <Route path='/home' component={Home} />
+             <Route path='/settings' component={Settings} />
        </Switch>
      </div>
    );

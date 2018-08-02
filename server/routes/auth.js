@@ -25,10 +25,10 @@ module.exports = (app, passport) => {
            failureRedirect: '/'
        }));
 
-       app.get('/api/current_user', (req, res) => {
-           console.log('req.user: ', req.user);
-           res.send(req.user);
-       })
+       app.get('/logout', (req, res) => {
+            req.logout();
+            return res.send();
+       });
     
        app.post('/signup', function(req, res, next) {
                    passport.authenticate('local-signup', (err, user, info) => {
